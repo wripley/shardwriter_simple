@@ -24,25 +24,20 @@ app = Flask(__name__)
 
 # { "IP": <SqlAlchemyConnection> }
 # Ex: { "10.103.160.3": <SqlAlchemyConnection> }
-db_connection = None
-
-def get_db_connection():
-    if db_connection is None:
-        db_user = os.getenv("DB_USER")
-        db_pass = os.getenv("DB_PASSWORD")
-        db_host = os.getenv("DB_HOST")
-        db_connection = sqlalchemy.create_engine(
-            # Equivalent URL:
-            # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
-            sqlalchemy.engine.url.URL(
-                drivername="mysql+pymysql",
-                username=db_user,
-                password=db_pass,
-                host=db_host,
-                database="db"
-            ),
-        )
-    return db_connection
+db_user = os.getenv("DB_USER")
+db_pass = os.getenv("DB_PASSWORD")
+db_host = os.getenv("DB_HOST")
+db_connection = sqlalchemy.create_engine(
+    # Equivalent URL:
+    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
+    sqlalchemy.engine.url.URL(
+        drivername="mysql+pymysql",
+        username=db_user,
+        password=db_pass,
+        host=db_host,
+        database="db"
+    ),
+)
 
 
 @app.route("/", methods=["POST"])
@@ -67,9 +62,8 @@ def shard_write():
     statement = sqlalchemy.text("INSERT INTO people (FirstName, LastName) VALUES (\"{}\",\"{}\");".format(firstName,lastName))
     # The SQLAlchemy engine will help manage interactions, including automatically
     # managing a pool of connections to your database
-    db = get_db_connection()
     try:
-        with db.connect() as connection:
+        with db_connection as connection:
             connection.execute(statement).fetchall()
     except Exception as e:
         print(e)
