@@ -59,14 +59,14 @@ def shard_write():
     statement = sqlalchemy.text("INSERT INTO people (FirstName, LastName) VALUES (\"{}\",\"{}\");".format(firstName,lastName))
     # The SQLAlchemy engine will help manage interactions, including automatically
     # managing a pool of connections to your database
-    try:
-        with db_connection.connect() as connection:
-            connection.execute(statement).fetchall()
-    except Exception as e:
-        print(e)
-        return Response(
-                status=500,
-                response="Error writing to database.")
+    # try:
+    with db_connection.connect() as connection:
+        connection.execute(statement).fetchall()
+    # except Exception as e:
+    #     print(e)
+    #     return Response(
+    #             status=500,
+    #             response="Error writing to database.")
     return Response(
         status=200,
         response="Message written")
