@@ -1,0 +1,11 @@
+sudo apt-get update 
+sudo apt-get install python3 git -y
+wget https://bootstrap.pypa.io/get-pip.py 
+sudo python get-pip.py
+git clone https://github.com/wripley/shardwriter_simple
+cd shardwriter
+export DB_USER=''
+export DB_PASSWORD=''
+export DB_HOST=''
+pip install -r requirements.txt
+python shardwriter.py
