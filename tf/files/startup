@@ -3,7 +3,7 @@ sudo apt-get install python3 git -y
 wget https://bootstrap.pypa.io/get-pip.py 
 sudo python get-pip.py
 git clone https://github.com/wripley/shardwriter_simple
-cd shardwriter
+cd shardwriter_simple
 export DB_USER=''
 export DB_PASSWORD=''
 export DB_HOST=''
