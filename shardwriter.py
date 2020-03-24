@@ -51,11 +51,8 @@ def shard_write():
         Response object using `make_response`
         <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>.
     """
-    print(request)
     request_json = request.get_json(silent=True)
     request_args = request.args
-
-    print(request_json)
 
     firstName = request_json["firstName"]
     lastName = request_json["lastName"]
@@ -63,10 +60,13 @@ def shard_write():
     # The SQLAlchemy engine will help manage interactions, including automatically
     # managing a pool of connections to your database
     try:
-        with db_connection as connection:
+        with db_connection.connect() as connection:
             connection.execute(statement).fetchall()
     except Exception as e:
         print(e)
+        return Response(
+                status=500,
+                response="Error writing to database.")
     return Response(
         status=200,
         response="Message written")
