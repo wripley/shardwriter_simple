@@ -74,5 +74,5 @@ def shard_write():
 
 # https://stackoverflow.com/questions/30554702/cant-connect-to-flask-web-service-connection-refused
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080), debug=True)
 
